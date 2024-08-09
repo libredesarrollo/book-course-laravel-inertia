@@ -18,6 +18,9 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
+        container:{
+            center:true
+        }
     },
 
     plugins: [forms, typography],
