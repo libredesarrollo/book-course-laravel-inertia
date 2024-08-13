@@ -12,6 +12,17 @@ defineProps({
     title: String,
 });
 
+// hide message flash
+
+const visibleFlashContainer = ref(true);
+
+const hideFlashMessage = () => {
+    setTimeout(() => (visibleFlashContainer.value = false), 4000)
+    return true
+}
+
+// hide message flash
+
 const showingNavigationDropdown = ref(false);
 
 const switchToTeam = (team) => {
@@ -303,10 +314,14 @@ const logout = () => {
 
             <!-- Page Content -->
             <main>
-                <div v-if="$page.props.flash.message"
-                    class="container my-2 px-4 py-3 bg-purple-300 text-purple-800 rounded shadow-sm">
-                    {{ $page.props.flash.message }}
-                </div>
+                <transition name="fade">
+                    <div v-if="visibleFlashContainer">
+                        <div v-if="$page.props.flash.message && hideFlashMessage()"
+                            class="container my-2 px-4 py-3 bg-purple-300 text-purple-800 rounded shadow-sm">
+                            {{ $page.props.flash.message }}
+                        </div>
+                    </div>
+                </transition>
                 <slot />
             </main>
         </div>
