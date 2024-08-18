@@ -19,6 +19,7 @@ Route::middleware([
     'verified',
 ])->prefix('dashboard')->group(function () {
     Route::resource('/category', App\Http\Controllers\Dashboard\CategoryController::class);
+    Route::resource('/post', App\Http\Controllers\Dashboard\PostController::class);
 
     Route::get('/', function () {
         return Inertia::render('Dashboard');

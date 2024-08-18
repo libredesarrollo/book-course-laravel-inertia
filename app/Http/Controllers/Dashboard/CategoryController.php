@@ -34,7 +34,7 @@ class CategoryController extends Controller
     public function store(Store $request)
     {
         Category::create($request->validated());
-        return to_route('category.index');
+        return to_route('category.index')->with('message','Record Created!');
     }
 
     /**
@@ -68,6 +68,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return to_route('category.index');
+        return to_route('category.index')->with('message','Record Deleled!');
     }
 }
