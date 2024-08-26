@@ -1,6 +1,13 @@
 import './bootstrap';
 import '../css/app.css';
 
+// ORUGA
+import Oruga from '@oruga-ui/oruga-next'
+import '@oruga-ui/theme-oruga/dist/oruga.min.css'
+
+// Material Design
+import '@mdi/font/css/materialdesignicons.min.css'
+
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -14,6 +21,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(Oruga)
             .use(ZiggyVue)
             .mount(el);
     },

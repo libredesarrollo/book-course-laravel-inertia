@@ -20,7 +20,7 @@ class Post extends Model
     {
         return $this->morphToMany(Tag::class, 'taggagles');
     }
-    function getIMageUrl()
+    function getImageUrl()
     {
         return URL::asset("images/post/" . $this->image);
     }

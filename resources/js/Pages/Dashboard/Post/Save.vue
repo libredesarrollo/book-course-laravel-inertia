@@ -85,6 +85,44 @@
 
                         <InputError :message="errors.category_id" class="mt-2" />
                     </div>
+                    <div class="col-span-6">
+                        <InputLabel value="Image" />
+                        <TextInput type="file" @input="form.image = $event.target.files[0]" />
+                        <InputError :message="errors.image" class="mt-2" />
+                    </div>
+                    <div class="col-span-6">
+                        <InputLabel value="Image Oruga" />
+
+                        <o-upload v-model="form.image">
+                            <o-button tag="upload-button" variant="primary">
+                                <o-icon icon="upload"></o-icon>
+                                <span>Click to Upload</span>
+                            </o-button>
+                        </o-upload>
+
+                        <InputError :message="errors.image" class="mt-2" />
+                    </div>
+                    <div class="col-span-6">
+                        <!-- <o-upload v-model="dropFiles" v-if="post.id" multiple drag-drop> -->
+                        <o-upload v-model="dropFiles" v-if="post.id"  drag-drop>
+                            <section class="">
+                                <o-icon icon="upload"></o-icon>
+                                <span>Drop your files here or click to upload</span>
+                            </section>
+                        </o-upload>
+                        
+                        <div class="container mt-4" v-if="post.image">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img :src="'/image/post/'+post.image" :alt="post.title" class="max-w-sm rounded-md shadow-sm">
+                                    <danger-button class="mt-2" @click="form.delete(route('post.image.delete',post.id))">
+                                        Delete
+                                    </danger-button>
+                                    <a class="mt-2 ml-2 link-button-default" :href="'/image/post/'+post.image" download>Download</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </template>
 
                 <template #actions>
@@ -99,10 +137,35 @@
                 </template>
             </FormSection>
         </div>
+
+        <div v-if="post.id != ''">
+            <!-- <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="col-span-6">
+                                
+                                <InputLabel value="Image" />
+                                
+                                <TextInput type="file" @input="form.image = $event.target.files[0]" />
+                                
+                                <InputError :message="errors.image" class="mt-2" />
+
+                                <PrimaryButton @click="upload">Upload</PrimaryButton>
+                                
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+        </div>
+
     </AppLayout>
 </template>
 
 <script>
+
+import { watch, ref } from 'vue'
 
 import { router, useForm } from "@inertiajs/vue3"
 
@@ -112,6 +175,7 @@ import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 export default {
@@ -129,6 +193,7 @@ export default {
                 posted: '',
                 type: '',
                 category_id: '',
+                image: '',
             }
         },
         categories: Array
@@ -139,6 +204,7 @@ export default {
         InputError,
         InputLabel,
         PrimaryButton,
+        DangerButton,
         TextInput
     },
     setup(props) {
@@ -151,17 +217,44 @@ export default {
             posted: props.post.posted,
             type: props.post.type,
             category_id: props.post.category_id,
+            image: props.post.image,
         })
+
+        // const dropFiles = ref([])
+        const dropFiles = ref('')
 
         function submit() {
             if (props.post.id != '') {
-                router.put(route("post.update", props.post.id), form)
+                // router.put(route("post.update", props.post.id), form)
+                router.post(route("post.update", props.post.id), {
+                    _method: 'put',
+                    ...form
+                })
             } else {
                 router.post(route("post.store"), form)
             }
         }
 
-        return { form, submit }
-    }
+        function upload() {
+            router.post(route("post.upload", props.post.id), form)
+        }
+
+        // watch(() => dropFiles, (currentValue, oldValue) => {
+        //     console.log(dropFiles)
+        // }, { deep: true })
+
+        watch(() => dropFiles, (currentValue, oldValue) => {
+            // console.log(dropFiles.value)
+            router.post(route("post.upload", props.post.id), {
+                // "image": currentValue.value[currentValue.value.length - 1]
+                "image": currentValue.value
+            });
+        },
+            { deep: true });
+
+
+        return { form, submit, upload, dropFiles }
+    },
+
 }
 </script>
