@@ -13,6 +13,10 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
+// CKEDITOR
+import { CkeditorPlugin  } from '@ckeditor/ckeditor5-vue';
+
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -23,6 +27,7 @@ createInertiaApp({
             .use(plugin)
             .use(Oruga)
             .use(ZiggyVue)
+            .use(CkeditorPlugin )
             .mount(el);
     },
     progress: {

@@ -47,8 +47,13 @@
                     </div>
                     <div class="col-span-6">
                         <InputLabel for="text" value="Text" />
-                        <textarea id="text" v-model="form.text"
-                            class="block w-full mt-1 border-gray-300 rounded-md"></textarea>
+                        <!-- <textarea id="text" v-model="form.text"
+                            class="block w-full mt-1 border-gray-300 rounded-md"></textarea> -->
+
+                        <!-- <ckeditor :editor="editor" v-model="form.text"></ckeditor> -->
+
+                        <ckeditor v-model="form.text" :editor="editor" :config="editorConfig" />
+
                         <InputError :message="errors.text" class="mt-2" />
                     </div>
                     <div class="col-span-6">
@@ -104,21 +109,24 @@
                     </div>
                     <div class="col-span-6">
                         <!-- <o-upload v-model="dropFiles" v-if="post.id" multiple drag-drop> -->
-                        <o-upload v-model="dropFiles" v-if="post.id"  drag-drop>
+                        <o-upload v-model="dropFiles" v-if="post.id" drag-drop>
                             <section class="">
                                 <o-icon icon="upload"></o-icon>
                                 <span>Drop your files here or click to upload</span>
                             </section>
                         </o-upload>
-                        
+
                         <div class="container mt-4" v-if="post.image">
                             <div class="card">
                                 <div class="card-body">
-                                    <img :src="'/image/post/'+post.image" :alt="post.title" class="max-w-sm rounded-md shadow-sm">
-                                    <danger-button class="mt-2" @click="form.delete(route('post.image.delete',post.id))">
+                                    <img :src="'/image/post/' + post.image" :alt="post.title"
+                                        class="max-w-sm rounded-md shadow-sm">
+                                    <danger-button class="mt-2"
+                                        @click="form.delete(route('post.image.delete', post.id))">
                                         Delete
                                     </danger-button>
-                                    <a class="mt-2 ml-2 link-button-default" :href="'/image/post/'+post.image" download>Download</a>
+                                    <a class="mt-2 ml-2 link-button-default" :href="'/image/post/' + post.image"
+                                        download>Download</a>
                                 </div>
                             </div>
                         </div>
@@ -169,6 +177,8 @@ import { watch, ref } from 'vue'
 
 import { router, useForm } from "@inertiajs/vue3"
 
+import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo , Heading} from 'ckeditor5';
+
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 import FormSection from '@/Components/FormSection.vue';
@@ -178,7 +188,18 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
+import 'ckeditor5/ckeditor5.css';
+
 export default {
+    data() {
+        return {
+            editor: ClassicEditor,
+            editorConfig: {
+                plugins: [Bold, Essentials, Italic, Mention, Paragraph, Undo, Heading ,],
+                toolbar: ['undo', 'redo', '|', 'bold', 'italic', 'heading',],
+            }
+        };
+    },
     props: {
         errors: Object,
         post: {
@@ -205,7 +226,8 @@ export default {
         InputLabel,
         PrimaryButton,
         DangerButton,
-        TextInput
+        TextInput,
+        ClassicEditor
     },
     setup(props) {
         const form = useForm({
