@@ -27,7 +27,7 @@ createInertiaApp({
             .use(plugin)
             .use(Oruga)
             .use(ZiggyVue)
-            .use(CkeditorPlugin )
+            .use(CkeditorPlugin)
             .mount(el);
     },
     progress: {
