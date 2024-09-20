@@ -69,3 +69,13 @@
     padding: 10px;
 }
 /* CKEDITOR */
+
+
+/* STEP */
+.step {
+    @apply font-medium px-6 py-2 border-b-2 tracking-wider
+}
+.active {
+    @apply border-indigo-500 rounded-t bg-gray-100
+}
+/* STEP */
