@@ -76,7 +76,7 @@ export default {
         const form = useForm({
             id: props.contactDetail.id,
             extra: props.contactDetail.extra,
-            contact_general_id: props.contactDetail.contact_general_id,
+            contact_general_id: props.contactGeneralId,
         })
 
         function submit() {
