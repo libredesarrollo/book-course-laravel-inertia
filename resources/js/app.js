@@ -14,7 +14,8 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 // CKEDITOR
-import { CkeditorPlugin  } from '@ckeditor/ckeditor5-vue';
+import { CkeditorPlugin } from '@ckeditor/ckeditor5-vue';
+import { vueDebounce } from 'vue-debounce'
 
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -28,6 +29,7 @@ createInertiaApp({
             .use(Oruga)
             .use(ZiggyVue)
             .use(CkeditorPlugin)
+            .directive('debounce', vueDebounce({lock: true}))
             .mount(el);
     },
     progress: {
