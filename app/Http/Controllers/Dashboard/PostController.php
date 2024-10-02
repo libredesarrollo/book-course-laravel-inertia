@@ -18,6 +18,16 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
 
+    public $columns = [
+        'id' => 'Id',
+        'title' => 'Title',
+        'date' => 'Date',
+        'posted' => 'Posted',
+        'category_id' => 'Category',
+        'description' => 'Description',
+        'type' => 'Type'
+    ];
+
     public function index()
     {
         // $posts = Post::paginate(15);
@@ -32,6 +42,10 @@ class PostController extends Controller
         $to = request('to');
         $search = request('search');
         //data
+        //order
+        $sortColumn = request('sortColumn') ?? 'id';
+        $sortDirection = request('sortDirection') ?? 'desc';
+        //order
 
         $posts = Post::when(request('search'), function (Builder $query, string $search) {
             $query->where(function ($query) use ($search) {
@@ -57,7 +71,9 @@ class PostController extends Controller
                         date($to)
                     ]);
                 });
-        })->with('category')->paginate(15);
+        })->with('category')
+        ->orderBy($sortColumn, $sortDirection)
+        ->paginate(15);
 
 
 
@@ -77,6 +93,7 @@ class PostController extends Controller
         return inertia(
             'Dashboard/Post/Index',
             [
+                'columns' => $this->columns,
                 'posts' => $posts,
                 'categories' => $categories,
                 'prop_type' => $type,
@@ -85,6 +102,8 @@ class PostController extends Controller
                 'prop_from' => $from,
                 'prop_to' => $to,
                 'prop_search' => $search,
+                'prop_sortDirection' => $sortDirection,
+                'prop_sortColumn' => $sortColumn,
             ]
         );
     }

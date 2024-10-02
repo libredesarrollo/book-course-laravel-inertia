@@ -17,7 +17,8 @@
 
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <!-- <TextInput autofocus @keyup="customSearch" class="w-full" type="text" placeholder="Search..." v-model="search" /> -->
-                        <TextInput autofocus v-debounce.500ms="customSearch" :debounce-events="['keyup']" class="w-full" type="text" placeholder="Search..." v-model="search" />
+                        <TextInput autofocus v-debounce.500ms="customSearch" :debounce-events="['keyup']" class="w-full"
+                            type="text" placeholder="Search..." v-model="search" />
 
                         <select @change="customSearch" class="rounded w-full border-gray-300" v-model="posted">
                             <option :value="null">Posted</option>
@@ -37,24 +38,46 @@
                         </select>
 
                         <TextInput class="w-full" type="date" placeholder="Date From" v-model="from" />
-                        <TextInput class="w-full" @change="customSearch" type="date" placeholder="Date To" v-model="to" />
+                        <TextInput class="w-full" @change="customSearch" type="date" placeholder="Date To"
+                            v-model="to" />
 
                         <div>
-                        <PrimaryButton @click="customSearch">
-                            Filter
-                        </PrimaryButton>
+                            <PrimaryButton @click="customSearch">
+                                Filter
+                            </PrimaryButton>
+            
+                            <SecondaryButton class="ml-3" @click="cleanFilter">
+                                Clear
+                            </SecondaryButton>
+            
                         </div>
                     </div>
 
                     <table class="w-full border">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="p-3">Id</th>
+                                <th v-for="c, k in columns" :key="c">
+                                    <button @click="sort(k)">
+                                    {{ c }}
+                                  
+                                        <template v-if="k == sortColumn">
+                                            <template v-if="'asc' == sortDirection">
+                                                &uarr;
+                                            </template>
+                                            <template v-else>
+                                                &darr;
+                                            </template>
+                                        </template>
+                                    </button>
+
+
+                                </th>
+                                <!-- <th class="p-3">Id</th>
                                 <th class="p-3">Title</th>
                                 <th class="p-3">Date</th>
                                 <th class="p-3">Posted</th>
                                 <th class="p-3">Category</th>
-                                <th class="p-3">Description</th>
+                                <th class="p-3">Description</th>-->
                                 <th class="p-3">Actions</th>
                             </tr>
                         </thead>
@@ -67,9 +90,10 @@
                                 <td class="p-2 text-center">{{ p.category.title }}</td>
                                 <td class="p-2 text-center">
                                     <textarea class="w-48 block m-auto">
-                                    {{ p.description }}
-                                </textarea>
+                {{ p.description }}
+            </textarea>
                                 </td>
+                                <td class="p-2 text-center">{{ p.type }}</td>
                                 <td class="p-2">
                                     <Link class="mr-2 text-sm text-purple-400 hover:text-purple-700"
                                         :href="route('post.edit', p)">Edit</Link>
@@ -97,6 +121,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Pagination from '@/Shared/Pagination.vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 export default {
     components: {
@@ -104,9 +129,11 @@ export default {
         Link,
         Pagination,
         PrimaryButton,
+        SecondaryButton,
         TextInput
     },
     props: {
+        columns: Object,
         posts: Object,
         categories: Array,
         prop_category_id: String,
@@ -115,6 +142,8 @@ export default {
         prop_from: String,
         prop_to: String,
         prop_search: String,
+        prop_sortDirection: String,
+        prop_sortColumn: String,
     },
     data() {
         return {
@@ -126,12 +155,17 @@ export default {
             from: this.prop_from,
             to: this.prop_to,
             search: this.prop_search,
+            sortColumn: this.prop_sortColumn,
+            sortDirection: this.prop_sortDirection,
         }
     },
     methods: {
         deletePost() {
             router.delete(route('post.destroy', this.deletePostRow))
             this.confirmDeleteActive = false
+        },
+        cleanFilter(){
+            router.get(route('post.index'))
         },
         customSearch() {
             router.get(route('post.index', {
@@ -141,7 +175,13 @@ export default {
                 from: this.from,
                 to: this.to,
                 search: this.search,
+                sortColumn: this.sortColumn,
+                sortDirection: this.sortDirection == 'asc' ? 'desc' : 'asc',
             }))
+        },
+        sort(column) {
+            this.sortColumn = column
+            this.customSearch()
         }
     },
 }   
