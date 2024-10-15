@@ -30,12 +30,14 @@ class PostController extends Controller
 
     public function index()
     {
+ 
         // $posts = Post::paginate(15);
         $categories = Category::get();
         //$posts = Post::where('id', '>=', 1);
 
         //data
         $type = request('type');
+
         $category_id = request('category_id');
         $posted = request('posted');
         $from = request('from');
@@ -52,28 +54,27 @@ class PostController extends Controller
                 $query->orWhere('id', 'like', "%" . $search . "%")
                     ->orWhere('title', 'like', "%" . $search . "%")
                     ->orWhere('description', 'like', "%" . $search . "%");
+            });
+        })
+            ->when(request('type'), function (Builder $query, string $type) {
+
+                $query->where('type', $type);
             })
-                ->when(request('type'), function (Builder $query, string $type) {
-                    $query->where('type', $type);
-                })
-
-                ->when(request('category_id'), function (Builder $query, string $category_id) {
-                    $query->where('category_id', $category_id);
-                })
-
-                ->when(request('posted'), function (Builder $query, string $posted) {
-                    $query->where('posted', $posted);
-                })
-
-                ->when(request('to'), function (Builder $query, string $to) {
-                    $query->whereBetween('date', [
-                        date(request("from")),
-                        date($to)
-                    ]);
-                });
-        })->with('category')
-        ->orderBy($sortColumn, $sortDirection)
-        ->paginate(15);
+            ->when(request('category_id'), function (Builder $query, string $category_id) {
+                $query->where('category_id', $category_id);
+            })
+            ->when(request('posted'), function (Builder $query, string $posted) {
+                $query->where('posted', $posted);
+            })
+            ->when(request('to'), function (Builder $query, string $to) {
+                $query->whereBetween('date', [
+                    date(request("from")),
+                    date($to)
+                ]);
+            })
+            ->with('category')
+            ->orderBy($sortColumn, $sortDirection)
+            ->paginate(15);
 
 
 

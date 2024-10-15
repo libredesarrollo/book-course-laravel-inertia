@@ -18,14 +18,19 @@
                 ">{{ post.date }}</span>
                         <span class="ml-4 rounded-md bg-purple-500 py-1 px-2 text-gray-800">{{
                             post.category.title
-                        }}</span>
+                            }}</span>
                         <span class="ml-4 rounded-md bg-purple-500 py-1 px-2 text-gray-800">{{
                             post.type
-                        }}</span>
+                            }}</span>
                     </p>
 
 
                     <div v-html="post.text" class="my-5"></div>
+
+                    <template v-if="post.type == 'advert'">
+                        <cart />
+                        <cart-item :post="post" />
+                    </template>
 
                     <hr />
                     <br>
@@ -36,10 +41,13 @@
         </div>
     </web-layout>
 </template>
-http://inertiastore.test/contact/contact-general/13/edit
+
 <script>
+
 import WebLayout from "@/Layouts/WebLayout.vue";
 import GeneralStep from "@/Pages/Contact/General/Step.vue";
+import Cart from "@/Fragment/Cart.vue";
+import CartItem from '@/Fragment/CartItem.vue';
 
 export default {
     data() {
@@ -47,11 +55,13 @@ export default {
     },
     components: {
         WebLayout,
-        GeneralStep
+        GeneralStep,
+        Cart,
+        CartItem
     },
     props: {
         post: Object,
-        errors: Array,
+        errors: Object,
     },
 };
 </script>

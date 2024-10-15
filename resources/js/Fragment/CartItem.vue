@@ -1,0 +1,58 @@
+<template>
+    <TextInput v-model="count" type="number" />
+    <PrimaryButton @click="submit">Send</PrimaryButton>
+</template>
+<script>
+
+import { router } from "@inertiajs/vue3"
+
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+
+import { toRaw } from 'vue'
+
+export default {
+    components: {
+        PrimaryButton,
+        TextInput
+    },
+    mounted() {
+        // console.log(toRaw(this.$page.props.cart))
+        // console.log(Object.keys(this.$page.props.cart))
+        let n = 0
+        Object.keys(this.$page.props.cart).forEach((k) => {
+            // console.log(this.$page.props.cart[k][1])
+            n += this.$page.props.cart[k][1]
+        })
+        console.log(n)
+    },
+    data() {
+        return {
+            count: "1"
+        }
+    },
+    props: {
+        post: {
+            required: true,
+            type: Object
+        }
+    },
+    methods: {
+        submit() {
+            router.post(route("shop.add", {
+                post: this.post.id,
+                count: this.count
+            }))
+
+            this.$oruga.notification.open({
+                message: 'Applied changes',
+                position: 'top-right',
+                variant: 'success',
+                duration: 2000,
+                closable: true
+            })
+
+        }
+    }
+}
+</script>
