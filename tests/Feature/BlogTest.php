@@ -30,8 +30,6 @@ class BlogTest extends TestCase
             // ->assertViewIs('app')
             ->assertStatus(200);
 
-        //dd(Post::with('category')->toSQL());
-
         $this->get(route('web.index'))->assertInertia(
             // fn(Assert $page) => dd($page)
             fn(Assert $page) => $page
@@ -58,9 +56,6 @@ class BlogTest extends TestCase
 
         Category::factory(3)->create();
         Post::factory(100)->create();
-
-        $category = Category::first();
-
         $category_id = 1;
 
         // dd(Post::with('category')->toSQL());
