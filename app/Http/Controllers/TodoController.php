@@ -38,7 +38,8 @@ class TodoController extends Controller
         Todo::where('id', $todo->id)->where('user_id', auth()->id())->update([
             'name' => $data['name']
         ]);
-        return back();
+        // return back();
+        return redirect(route('todo.index'));
     }
 
     function destroy(?Todo $todo = null)
@@ -48,19 +49,19 @@ class TodoController extends Controller
         } else {
             Todo::where("id", $todo->id)->where("user_id", auth()->id())->delete();
         }
-        return back();
+        // return back();
+        return redirect(route('todo.index'));
     }
     function status(Todo $todo)
     {
         Todo::where("id", $todo->id)->where("user_id", auth()->id())->update([
             'status' => request('status') == '1'
         ]);
-        return back();
+        return redirect(route('todo.index'));
     }
 
     function order()
     {
-    //    dd(request('ids'));
         foreach (request('ids') as $count => $id) {
             Todo::where('user_id', auth()->id())->where('id', $id)
                 ->update(['count' => $count]);

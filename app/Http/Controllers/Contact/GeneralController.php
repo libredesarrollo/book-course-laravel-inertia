@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Contact;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\GeneralRequest;
-use App\Models\ContactCompany;
 use App\Models\ContactGeneral;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class GeneralController extends Controller

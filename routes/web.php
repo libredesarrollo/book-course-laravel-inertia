@@ -18,11 +18,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->prefix('dashboard')->group(function () {
+Route::middleware(
+
+    [
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ]
+
+)->prefix('dashboard')->group(function () {
     Route::resource('category', App\Http\Controllers\Dashboard\CategoryController::class);
     Route::resource('post', App\Http\Controllers\Dashboard\PostController::class);
     Route::post('/post/upload/{post}', [App\Http\Controllers\Dashboard\PostController::class, 'upload'])->name('post.upload');
@@ -62,10 +66,15 @@ Route::group([
     Route::post('/add/{post}/{count}', [App\Http\Controllers\Shop\CartController::class, 'add'])->name('shop.add');
 });
 
-Route::group([
-    'prefix' => 'todo',
+Route::middleware(
 
-], function () {
+    [
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ]
+
+)->prefix('todo')->group(function () {
     Route::get('/', [App\Http\Controllers\TodoController::class, 'index'])->name('todo.index');
     Route::post('/store', [App\Http\Controllers\TodoController::class, 'store'])->name('todo.store');
     Route::put('/update/{todo}', [App\Http\Controllers\TodoController::class, 'update'])->name('todo.update');

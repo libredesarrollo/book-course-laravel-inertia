@@ -20,8 +20,8 @@ class CartController extends Controller
                 unset($cart[$post->id]);
                 session(['cart' => $cart]);
                 $this->saveDB($cart);
-                return redirect()->back();
             }
+            return redirect()->back();
         }
 
 
@@ -46,18 +46,20 @@ class CartController extends Controller
             $control = time();
 
             foreach ($cart as $c) {
-                ShoppingCart::updateOrCreate(
-                    [
-                        'post_id' => $c[0]->id,
-                        'user_id' => auth()->id(),
-                    ],
-                    [
-                        'post_id' => $c[0]->id,
-                        'count' => $c[1],
-                        'user_id' => auth()->id(),
-                        'control' => $control
-                    ]
-                );
+                if (Post::find($c[0]->id) != null) {
+                    ShoppingCart::updateOrCreate(
+                        [
+                            'post_id' => $c[0]->id,
+                            'user_id' => auth()->id(),
+                        ],
+                        [
+                            'post_id' => $c[0]->id,
+                            'count' => $c[1],
+                            'user_id' => auth()->id(),
+                            'control' => $control
+                        ]
+                    );
+                }
             }
 
             ShoppingCart::whereNot('control', $control)->where('user_id', auth()->id())->delete();

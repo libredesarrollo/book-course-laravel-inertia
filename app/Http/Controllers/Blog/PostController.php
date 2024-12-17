@@ -24,29 +24,29 @@ class PostController extends Controller
         $search = request('search');
         //data
 
+         //dd(request('type'));
+
         $posts = Post::when(request('search'), function (Builder $query, string $search) {
             $query->where(function ($query) use ($search) {
                 $query->orWhere('id', 'like', "%" . $search . "%")
                     ->orWhere('title', 'like', "%" . $search . "%")
                     ->orWhere('description', 'like', "%" . $search . "%");
+            });
+        })
+            ->when(request('type'), function (Builder $query, string $type) {
+                $query->where('type', $type);
             })
-                ->when(request('type'), function (Builder $query, string $type) {
-                    $query->where('type', $type);
-                })
+            ->when(request('category_id'), function (Builder $query, string $category_id) {
+                $query->where('category_id', $category_id);
+            })
+            ->when(request('to'), function (Builder $query, string $to) {
+                $query->whereBetween('date', [
+                    date(request("from")),
+                    date($to)
+                ]);
+            })->with('category')->paginate(15);
 
-                ->when(request('category_id'), function (Builder $query, string $category_id) {
-                    $query->where('category_id', $category_id);
-                })
-
-                ->when(request('to'), function (Builder $query, string $to) {
-                    $query->whereBetween('date', [
-                        date(request("from")),
-                        date($to)
-                    ]);
-                });
-        })->with('category')
-            ->paginate(15);
-
+          //dd($posts->toSQL());
 
         return inertia(
             'Blog/Index',

@@ -17,9 +17,8 @@ class CompanyController extends Controller
 
     public function store(CompanyRequest $request)
     {
-     
         $contactCompany = ContactCompany::create($request->validated());
-        return to_route('contact-general.edit', ['contact_general' => $contactCompany->general_id]);
+        return to_route('contact-general.edit', ['contact_general' => $contactCompany->contact_general_id]);
     }
 
     public function edit(ContactCompany $contactCompany)

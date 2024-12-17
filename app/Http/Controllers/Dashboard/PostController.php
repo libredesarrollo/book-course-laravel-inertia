@@ -30,7 +30,7 @@ class PostController extends Controller
 
     public function index()
     {
- 
+
         // $posts = Post::paginate(15);
         $categories = Category::get();
         //$posts = Post::where('id', '>=', 1);
@@ -75,6 +75,8 @@ class PostController extends Controller
             ->with('category')
             ->orderBy($sortColumn, $sortDirection)
             ->paginate(15);
+
+        // dd($posts->toSql());
 
 
 
@@ -188,8 +190,10 @@ class PostController extends Controller
      */
     public function store(Store $request)
     {
+        // dd($request['image']);
         $post = Post::create($request->validated());
-        $this->upload($request, $post);
+        if (request('image')) // img opcional
+            $this->upload($request, $post);
         return to_route('post.index')->with('message', 'Record Created!');
     }
 
@@ -216,7 +220,11 @@ class PostController extends Controller
     public function update(Put $request, Post $post)
     {
         $post->update($request->validated());
-        $this->upload($request, $post);
+        if (request('image')){
+            // img opcional
+            $this->upload($request, $post);
+        } 
+            
         return to_route('post.index')->with('message', 'Record Updated!');
     }
 

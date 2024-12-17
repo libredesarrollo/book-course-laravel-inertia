@@ -1,5 +1,5 @@
 <template>
-    <TextInput v-model="count" type="number" />
+    <TextInput v-model="count" type="number"/>
     <PrimaryButton @click="submit">Send</PrimaryButton>
 </template>
 <script>
@@ -24,18 +24,21 @@ export default {
             // console.log(this.$page.props.cart[k][1])
             n += this.$page.props.cart[k][1]
         })
-        console.log(n)
     },
     data() {
         return {
-            count: "1"
+            count: this.pcount,
         }
     },
     props: {
         post: {
             required: true,
             type: Object
-        }
+        },
+        pcount: {
+            type: String,
+            default: "1",
+        },
     },
     methods: {
         submit() {

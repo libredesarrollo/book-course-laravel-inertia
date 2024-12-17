@@ -39,6 +39,10 @@ return [
             'driver' => 'local',
             'root' => public_path(),
         ],
+        'public_upload_testing' => [
+            'driver' => 'local',
+            'root' => public_path('image/post'),
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

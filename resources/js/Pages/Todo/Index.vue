@@ -132,10 +132,18 @@ export default {
     methods: {
         create() {
             this.todoSelected = 0
-            router.post(route('todo.store', {
+            router.post(route('todo.store'), {
                 name: this.form.name
-            }))
-            setTimeout(() => window.location.reload(), 500)
+            }, {
+                onSuccess: (page) => {
+                    // console.log(page)
+                    console.log(page.props.todos)
+                    this.dtodos = page.props.todos
+                    // setTimeout(() => window.location.reload(), 500)
+
+                },
+            })
+
         },
         update(todo) {
             this.todoSelected = todo.id
@@ -146,7 +154,18 @@ export default {
         },
         remove() {
             this.confirmDeleteActive = false
-            router.delete(route('todo.destroy', this.deleteTodoRow))
+            router.delete(route('todo.destroy', this.deleteTodoRow), {
+                preserveScroll: true
+                ,
+                onSuccess: (page) => {
+                    // console.log(page)
+                    console.log(page.props.todos)
+                    this.dtodos = page.props.todos
+                    // setTimeout(() => window.location.reload(), 500)
+
+                },
+
+            })
         },
         removeAll() {
             router.delete(route('todo.destroy'))
