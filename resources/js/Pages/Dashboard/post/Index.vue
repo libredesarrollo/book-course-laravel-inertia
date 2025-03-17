@@ -1,12 +1,12 @@
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
 
-        <Link class="link-button-default mx-4 my-3" :href="route('category.create')">Create</Link>
+        <Link class="link-button-default mx-4  my-3" :href="route('post.create')">Create</Link>
 
         <div class="mx-4">
-            <table class=" w-full border">
+            <table class="w-full border">
                 <thead class="dark:bg-gray-800 bg-gray-100">
-                    <tr>
+                    <tr class="border-b">
                         <th class="p-3">Id</th>
                         <th class="p-3">Title</th>
                         <th class="p-3">Slug</th>
@@ -14,24 +14,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="c in categories.data" :key="c.id">
-                        <td class="p-2">{{ c.id }}</td>
-                        <td class="p-2">{{ c.title }}</td>
-                        <td class="p-2">{{ c.slug }}</td>
+                    <tr class="border-b" v-for="p in posts.data" :key="p.id">
+                        <td class="p-2">{{ p.id }}</td>
+                        <td class="p-2">{{ p.title }}</td>
+                        <td class="p-2">{{ p.slug }}</td>
                         <td class="p-2">
                             <Link class="text-sm text-purple-400 hover:text-purple-700"
-                                :href="route('category.edit', c.id)">
-                            Edit</Link>
+                                :href="route('post.edit', p.id)">Edit</Link>
                             <Link as="button" type="button" method="DELETE"
                                 class="text-sm text-red-400 hover:text-red-700 ml-2"
-                                :href="route('category.destroy', c.id)">Delete</Link>
+                                :href="route('post.destroy', p.id)">Delete</Link>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <pagination :links="categories" />
+        <pagination class="my-4" :links="posts" />
     </AppLayout>
 </template>
 
@@ -43,7 +42,7 @@ import Pagination from '@/shared/Pagination.vue';
 
 export default {
     props: {
-        categories: Object
+        posts: Object
     },
     components: {
         Pagination,
@@ -54,7 +53,7 @@ export default {
 
         const breadcrumbs = [
             {
-                title: 'Categories',
+                title: 'Posts',
                 // href: '/dashboard/category',
             },
         ];
