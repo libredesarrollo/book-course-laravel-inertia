@@ -33,6 +33,7 @@ class CategoryController extends Controller
     public function store(Store $request)
     {
         Category::create($request->validated());
+        return to_route('category.index')->with('message',"Created category successfully");
     }
 
     /**
@@ -48,14 +49,14 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        sleep(3);
-        return inertia("dashboard/category/Edit", compact('category'));
+        return inertia("dashboard/category/Edit", compact('category'))->with('message',"Updated category successfully");
     }
 
 
     public function update(Put $request, Category $category)
     {
         $category->update($request->validated());
+        return redirect()->route('category.index')->with('message',"Updated category successfully");
     }
 
 
@@ -65,5 +66,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+        return to_route('category.index')->with('message',"Deleted category successfully");
     }
 }
