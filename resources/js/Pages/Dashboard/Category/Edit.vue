@@ -1,55 +1,43 @@
 <template>
-    <AppLayout title="Create Category">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Category
-            </h2>
-        </template>
+    <AppLayout :breadcrumbs="breadcrumbs">
+        <div class="px-4 py-6 max-w-xl">
+            <HeadingSmall title="Create Category" description="Form to create categories" />
+            <form class="my-6" @submit.prevent="submit">
+                <div class="grid grid-cols-2 gap-2">
+                    <Label>Title</Label>
+                    <!-- <input type="text" v-model="form.title"> -->
+                    <Input type="text" v-model="form.title" placeholder="Title" required />
+                    <!-- <div v-if="errors.title">{{  errors.title }}</div> -->
+                    <InputError :message="errors.title" />
 
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <FormSection @submitted="submit">
-                <template #title>
-                    Category Edit
-                </template>
+                    <Label>Slug</Label>
+                    <!-- <input type="text" v-model="form.slug"> -->
+                    <Input type="text" v-model="form.slug" placeholder="Slug" required />
+                    <!-- <div v-if="errors.slug">{{  errors.slug }}</div> -->
+                    <InputError :message="errors.slug" />
 
-                <template #description>
-                    Edit a category <strong>{{ category.title }}</strong>
-                </template>
-
-                <template #form>
-                    <div class="col-span-6">
-                        <InputLabel for="title" value="Title" />
-                        <TextInput id="title" v-model="form.title" type="text" class="block w-full mt-1" autofocus />
-                        <InputError :message="errors.title" class="mt-2" />
+                    <div>
+                        <Button :disabled="form.processing" type="submit">Send</Button>
                     </div>
-                    <div class="col-span-6">
-                        <InputLabel for="slug" value="Slug" />
-                        <TextInput id="slug" v-model="form.slug" type="text" class="block w-full mt-1" autofocus />
-                        <InputError :message="errors.slug" class="mt-2" />
-                    </div>
-                </template>
-
-                <template #actions>
-                    <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Edit
-                    </PrimaryButton>
-                </template>
-            </FormSection>
+                </div>
+            </form>
         </div>
     </AppLayout>
 </template>
 
 <script>
 
-import { router, useForm } from "@inertiajs/vue3"
+import { router, useForm } from '@inertiajs/vue3';
 
-import AppLayout from "@/Layouts/AppLayout.vue";
+import AppLayout from '@/layouts/AppLayout.vue';
 
-import FormSection from '@/Components/FormSection.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import Input from '@/components/ui/input/Input.vue';
+import Label from '@/components/ui/label/Label.vue';
+import InputError from '@/components/InputError.vue';
+import HeadingSmall from '@/components/HeadingSmall.vue';
+
+import { Button } from '@/components/ui/button';
+
 
 export default {
     props: {
@@ -58,23 +46,32 @@ export default {
     },
     components: {
         AppLayout,
-        FormSection,
         InputError,
-        InputLabel,
-        PrimaryButton,
-        TextInput
+        HeadingSmall,
+        Input,
+        Label,
+        Button,
     },
     setup(props) {
         const form = useForm({
             title: props.category.title,
             slug: props.category.slug,
-        })
+        });
+  
+        const breadcrumbs = [
+            {
+                title: 'Edit Category: ' + props.category.title,
+                // href: '/dashboard/category/create',
+            },
+        ];
 
         function submit() {
-            router.put(route("category.update", props.category.id), form)
+            router.put(route("category.update", props.category.id), form);
         }
 
-        return { form, submit }
+        return {
+            submit, form, breadcrumbs
+        };
     }
 }
 </script>

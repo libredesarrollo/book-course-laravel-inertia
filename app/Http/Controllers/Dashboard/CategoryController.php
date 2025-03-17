@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\Put;
 use App\Http\Requests\Category\Store;
@@ -17,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::paginate(2);
-        return inertia('Dashboard/Category/Index', compact('categories'));
+        return inertia("dashboard/category/Index", compact("categories"));
     }
 
     /**
@@ -25,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return inertia("Dashboard/Category/Create");
+        return inertia('dashboard/category/Create');
     }
 
     /**
@@ -34,7 +33,6 @@ class CategoryController extends Controller
     public function store(Store $request)
     {
         Category::create($request->validated());
-        return to_route('category.index')->with('message','Record Created!');
     }
 
     /**
@@ -50,17 +48,16 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return inertia('Dashboard/Category/Edit', compact('category'));
+        sleep(3);
+        return inertia("dashboard/category/Edit", compact('category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Put $request, Category $category)
     {
         $category->update($request->validated());
-        return to_route('category.index')->with('message','Record Updated!');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -68,6 +65,5 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return to_route('category.index')->with('message','Record Deleled!');
     }
 }

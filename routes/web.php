@@ -1,88 +1,26 @@
 <?php
 
-use App\Http\Controllers\Contact\CompanyController;
-use App\Http\Controllers\Contact\DetailController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-use App\Http\Controllers\Contact\GeneralController;
-use App\Http\Controllers\Contact\PersonController;
-
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+    return Inertia::render('Welcome');
+})->name('home');
+
+Route::get('dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(
-
-    [
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified',
-    ]
-
+    ['auth', 'verified'],
 )->prefix('dashboard')->group(function () {
-    Route::resource('category', App\Http\Controllers\Dashboard\CategoryController::class);
-    Route::resource('post', App\Http\Controllers\Dashboard\PostController::class);
-    Route::post('/post/upload/{post}', [App\Http\Controllers\Dashboard\PostController::class, 'upload'])->name('post.upload');
-    Route::delete('/post/image/delete/{post}', [App\Http\Controllers\Dashboard\PostController::class, 'imageDelete'])->name('post.image.delete');
+    Route::resource('/category', App\Http\Controllers\Dashboard\CategoryController::class);
 
     Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
 
-Route::group([
-    'prefix' => 'contact',
-    // 'middleware' => [
-    //     'auth:sanctum',
-    //     config('jetstream.auth_session'),
-    //     'verified',
-    // ]
-], function () {
-    Route::resource('contact-general', GeneralController::class)->only(['create', 'edit', 'store', 'update']);
-    Route::resource('contact-company', CompanyController::class)->only(['create', 'edit', 'store', 'update']);
-    Route::resource('contact-person', PersonController::class)->only(['create', 'edit', 'store', 'update']);
-    Route::resource('contact-detail', DetailController::class)->only(['create', 'edit', 'store', 'update']);
-});
 
-Route::group([
-    'prefix' => 'blog',
-
-], function () {
-    Route::get('/', [App\Http\Controllers\Blog\PostController::class, 'index'])->name('web.index');
-    Route::get('/{post:slug}', [App\Http\Controllers\Blog\PostController::class, 'show'])->name('web.show');
-});
-Route::group([
-    'prefix' => 'shop',
-
-], function () {
-    Route::get('/', [App\Http\Controllers\Shop\CartController::class, 'index'])->name('shop.index');
-    Route::post('/add/{post}/{count}', [App\Http\Controllers\Shop\CartController::class, 'add'])->name('shop.add');
-});
-
-Route::middleware(
-
-    [
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified',
-    ]
-
-)->prefix('todo')->group(function () {
-    Route::get('/', [App\Http\Controllers\TodoController::class, 'index'])->name('todo.index');
-    Route::post('/store', [App\Http\Controllers\TodoController::class, 'store'])->name('todo.store');
-    Route::put('/update/{todo}', [App\Http\Controllers\TodoController::class, 'update'])->name('todo.update');
-    Route::delete('/destroy/{todo?}', [App\Http\Controllers\TodoController::class, 'destroy'])->name('todo.destroy');
-    Route::post('/status/{todo}', [App\Http\Controllers\TodoController::class, 'status'])->name('todo.status');
-    Route::post('/order', [App\Http\Controllers\TodoController::class, 'order'])->name('todo.order');
-});
-
-
-
-// Route::inertia('indexinertia','Dashboard/Post/Index');
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

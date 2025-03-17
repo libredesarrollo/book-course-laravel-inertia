@@ -2,11 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\ShoppingCart;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Event;
-
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,26 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Event::listen(function (Login $event) {
-        //     $this->setShoppindCartSession();
-        // });
-    }
-
-    private function setShoppindCartSession()
-    {
-        $cartDB = ShoppingCart::where('user_id', auth()->id())->get();
-        $cartSession = session('cart', []);
-
-        foreach ($cartDB as $c) {
-            if (Arr::exists($cartSession, $c->post->id)) {
-                // update
-                $cartSession[$c->post->id][1] = $c->count;
-            } else {
-                // add
-                $cartSession[$c->post->id] = [$c->post, $c->count];
-            }
-
-            session(['cart' => $cartSession]);
-        }
+        //
     }
 }

@@ -14,24 +14,19 @@ class Put extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    public function prepareForValidation()
+    {
+        if (str($this->slug)->trim() == "")
+            $this->merge([
+                'slug' => str($this->title)->slug()
+            ]);
+    }
+
     public function rules(): array
     {
         return [
             "title" => "required|min:5|max:255",
-            "slug" => "required|min:5|max:255|unique:categories,id," . $this->route('category')->id,
+            "slug" => "required|min:5|max:255|unique:categories,id," . $this->route("category")->id
         ];
-    }
-    function prepareForValidation()
-    {
-        if (str($this->slug)->trim() == '') {
-            $this->merge([
-                'slug' => str($this->title)->slug()
-            ]);
-        }
     }
 }

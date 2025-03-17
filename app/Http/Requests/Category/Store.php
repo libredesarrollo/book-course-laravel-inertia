@@ -14,6 +14,14 @@ class Store extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        if (str($this->slug)->trim() == "")
+            $this->merge([
+                'slug' => str($this->title)->slug()
+            ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,8 +30,8 @@ class Store extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => "required|min:5|max:255",
-            "slug" => "required|min:5|max:255|unique:categories",
+            "title" => 'required|min:5|max:255',
+            "slug" => 'nullable|min:5|max:255|unique:categories',
         ];
     }
 }

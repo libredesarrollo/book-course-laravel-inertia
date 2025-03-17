@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Post;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,12 +37,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
-            'flash' => [
-                'message' => $request->session()->get('message')
+        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+
+        return [
+            ...parent::share($request),
+            'name' => config('app.name'),
+            'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'auth' => [
+                'user' => $request->user(),
             ],
-            'step' => 1,
-            'cart' => session('cart', []),
-        ]);
+            'ziggy' => [
+                ...(new Ziggy)->toArray(),
+                'location' => $request->url(),
+            ],
+        ];
     }
 }
