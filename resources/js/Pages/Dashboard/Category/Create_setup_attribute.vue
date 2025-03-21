@@ -29,11 +29,9 @@
     </AppLayout>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
 import { router, useForm } from '@inertiajs/vue3';
-
-import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/AppLayout.vue';
 
@@ -41,6 +39,7 @@ import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import InputError from '@/components/InputError.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
+
 import { Button } from '@/components/ui/button';
 
 const form = useForm({
@@ -52,10 +51,9 @@ const props = defineProps({
     errors: Object,
 });
 
-const breadcrumbs : BreadcrumbItem[] = [
+const breadcrumbs = [
     {
         title: 'Categories',
-         href: '',
         // href: '/dashboard/category/create',
     },
 ];

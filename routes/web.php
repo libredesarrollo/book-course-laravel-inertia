@@ -16,6 +16,7 @@ Route::middleware(
 )->prefix('dashboard')->group(function () {
     Route::resource('/category', App\Http\Controllers\Dashboard\CategoryController::class);
     Route::resource('/post', App\Http\Controllers\Dashboard\PostController::class);
+    Route::post('/post/upload/{post}', [App\Http\Controllers\Dashboard\PostController::class,'upload'])->name('post.upload');
 
     Route::get('/', function () {
         return Inertia::render('Dashboard');

@@ -5,49 +5,65 @@
             <form class="my-6" @submit.prevent="submit">
 
                 <Label>Title</Label>
-                <Input id="title" v-model="form.title" type="text" class="block w-full mt-1" autofocus />
-                <InputError :message="errors.title" class="mt-2" />
+                <div>
+                    <Input id="title" v-model="form.title" type="text" class="block w-full mt-1" autofocus />
+                    <InputError :message="errors.title" class="mt-2" />
+                </div>
 
                 <Label>Slug</Label>
-                <Input id="slug" v-model="form.slug" type="text" class="block w-full mt-1" />
-                <InputError :message="errors.slug" class="mt-2" />
-
+                <div>
+                    <Input id="slug" v-model="form.slug" type="text" class="block w-full mt-1" />
+                    <InputError :message="errors.slug" class="mt-2" />
+                </div>
                 <Label>Date</Label>
-                <Input id="date" v-model="form.date" type="date" class="block w-full mt-1" />
-                <InputError :message="errors.date" class="mt-2" />
+                <div>
+                    <Input id="date" v-model="form.date" type="date" class="block w-full mt-1" />
+                    <InputError :message="errors.date" class="mt-2" />
+                </div>
 
                 <Label>Text</Label>
-                <textarea id="text" v-model="form.text" class="block w-full mt-1 border-gray-300 rounded-md"></textarea>
-                <InputError :message="errors.text" class="mt-2" />
+                <div>
+                    <textarea id="text" v-model="form.text"
+                        class="block w-full mt-1 border-gray-300 rounded-md"></textarea>
+                    <InputError :message="errors.text" class="mt-2" />
+                </div>
 
                 <Label>Description</Label>
-                <textarea id="description" v-model="form.description"
-                    class="block w-full mt-1 border-gray-300 rounded-md"></textarea>
-                <InputError :message="errors.text" class="mt-2" />
+                <div>
+                    <textarea id="description" v-model="form.description"
+                        class="block w-full mt-1 border-gray-300 rounded-md"></textarea>
+                    <InputError :message="errors.text" class="mt-2" />
+                </div>
 
                 <Label>Posted</Label>
-                <select v-model="form.posted" class="rounded-md w-full border-gray-300 my-2">
-                    <option value="not">No</option>
-                    <option value="yes">Yes</option>
-                </select>
-                <InputError :message="errors.posted" class="mt-2" />
+                <div>
+                    <select v-model="form.posted" class="rounded-md w-full border-gray-300 my-2">
+                        <option value="not">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                    <InputError :message="errors.posted" class="mt-2" />
+                </div>
 
                 <Label>Type</Label>
-                <select v-model="form.type" class="rounded-md w-full border-gray-300">
-                    <option value="advert">Advert</option>
-                    <option value="post">Post</option>
-                    <option value="course">Course</option>
-                    <option value="movie">Movie</option>
-                </select>
+                <div>
+                    <select v-model="form.type" class="rounded-md w-full border-gray-300">
+                        <option value="advert">Advert</option>
+                        <option value="post">Post</option>
+                        <option value="course">Course</option>
+                        <option value="movie">Movie</option>
+                    </select>
 
-                <InputError :message="errors.type" class="mt-2" />
+                    <InputError :message="errors.type" class="mt-2" />
+                </div>
 
                 <Label>Category</Label>
-                <select v-model="form.category_id" class="rounded-md w-full border-gray-300">
-                    <option v-for="c in categories" :value="c.id" :key="c.id">{{ c.title }}</option>
-                </select>
+                <div>
+                    <select v-model="form.category_id" class="rounded-md w-full border-gray-300">
+                        <option v-for="c in categories" :value="c.id" :key="c.id">{{ c.title }}</option>
+                    </select>
 
-                <InputError :message="errors.category_id" class="mt-2" />
+                    <InputError :message="errors.category_id" class="mt-2" />
+                </div>
 
                 <div>
                     <Button class="mt-2" :disabled="form.processing" type="submit">Send</Button>
