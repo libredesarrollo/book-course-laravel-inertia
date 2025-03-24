@@ -23,8 +23,9 @@
 
                 <Label>Text</Label>
                 <div>
-                    <textarea id="text" v-model="form.text"
-                        class="block w-full mt-1 border-gray-300 rounded-md"></textarea>
+                    <!-- <textarea id="text" v-model="form.text"
+                        class="block w-full mt-1 border-gray-300 rounded-md"></textarea> -->
+                    <ckeditor v-model="form.text" :editor="editor" :config="editorConfig" />
                     <InputError :message="errors.text" class="mt-2" />
                 </div>
 
@@ -74,22 +75,18 @@
 
         <div v-if="post.id != ''">
             <div class="px-4 py-6 max-w-xl">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="col-span-6">
-                                <Label>Image</Label>
-                                <Input type="file" @input="form.image = $event.target.files[0]" />
-                                <InputError :message="errors.image" class="mt-2" />
-                                <Button @click="upload">Upload</Button>
-                            </div>
-                        </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="col-span-6">
+                        <Label>Image</Label>
+                        <Input type="file" @input="form.image = $event.target.files[0]" />
+                        <InputError :message="errors.image" class="mt-2" />
+                        <Button @click="upload">Upload</Button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-span-6">
+        <div class="px-4 py-6 max-w-xl">
             <Label>Image Oruga</Label>
 
             <o-upload v-model="form.image">
@@ -99,10 +96,9 @@
                 </o-button>
             </o-upload>
 
-
             <InputError :message="errors.image" class="mt-2" />
         </div>
-        <div class="col-span-6" v-if="post.id">
+        <div class="px-4 py-6 max-w-xl" v-if="post.id">
             <o-upload v-model="dropFiles" drag-drop>
                 <section class="ex-center">
                     <p>
@@ -113,26 +109,25 @@
             </o-upload>
         </div>
 
-        <div class="container mt-4" v-if="post.image">
-    <div class="card">
-        <div class="card-body">
-            <img :src="'/image/post/'+post.image" :alt="post.title" class="max-w-sm rounded-md shadow-sm">
-            <button variant="danger" size="small" class="mt-2" @click="form.delete(route('post.image.delete',post.id))">
+        <div class="px-4 py-6 max-w-xl" v-if="post.image">
+            <img :src="'/image/post/' + post.image" :alt="post.title" class="max-w-sm rounded-md shadow-sm">
+            <button variant="danger" size="small" class="mt-2"
+                @click="form.delete(route('post.image.delete', post.id))">
                 Delete
             </button>
-            <a class="mt-2 ml-2 link-button-default" :href="'/image/post/'+post.image" download>Download</a>
+            <a class="mt-2 ml-2 link-button-default" :href="'/image/post/' + post.image" download>Download</a>
         </div>
-    </div>
-</div>
-
-
 
     </AppLayout>
 </template>
 
 <script>
-
 import { router, useForm } from '@inertiajs/vue3';
+
+import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo, Heading } from 'ckeditor5';
+
+
+import 'ckeditor5/ckeditor5.css';
 
 import { ref } from "vue";
 
@@ -145,6 +140,16 @@ import HeadingSmall from '@/components/HeadingSmall.vue';
 
 import { Button } from '@/components/ui/button';
 export default {
+    data() {
+        return {
+            editor: ClassicEditor,
+            editorConfig: {
+                licenseKey: 'GPL',
+                plugins: [Bold, Essentials, Italic, Mention, Paragraph, Undo, Heading,],
+                toolbar: ['undo', 'redo', '|', 'bold', 'italic', 'heading',],
+            }
+        };
+    },
     props: {
         errors: Object,
         post: {
@@ -173,6 +178,7 @@ export default {
         Input,
         Label,
         Button,
+        ClassicEditor
     },
     setup(props) {
         const dropFiles = ref("")
@@ -188,6 +194,13 @@ export default {
             type: props.post.type,
             category_id: props.post.category_id,
         })
+
+        // const editor = ClassicEditor
+        // const editorConfig = {
+        //     licenseKey: 'GPL',
+        //     plugins: [Bold, Essentials, Italic, Mention, Paragraph, Undo, Heading,],
+        //     toolbar: ['undo', 'redo', '|', 'bold', 'italic', 'heading',],
+        // }
 
         const breadcrumbs = [
             {
@@ -209,7 +222,7 @@ export default {
         }
 
         return {
-            submit, upload, form, breadcrumbs, dropFiles
+            submit, upload, form, breadcrumbs, dropFiles/*, editor, editorConfig*/
         };
     }
 }

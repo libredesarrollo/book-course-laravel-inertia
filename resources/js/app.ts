@@ -7,6 +7,9 @@ import '@oruga-ui/theme-oruga/dist/oruga.css'
 // Material Design
 import '@mdi/font/css/materialdesignicons.min.css'
 
+// CKEditor
+import { CkeditorPlugin  } from '@ckeditor/ckeditor5-vue';
+
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
@@ -36,6 +39,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(Oruga)
+            .use(CkeditorPlugin)
             .use(ZiggyVue)
             .mount(el);
     },
