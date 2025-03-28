@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Contact\CompanyController;
+use App\Http\Controllers\Contact\DetailController;
+use App\Http\Controllers\Contact\GeneralController;
+use App\Http\Controllers\Contact\PersonController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,11 +20,20 @@ Route::middleware(
 )->prefix('dashboard')->group(function () {
     Route::resource('/category', App\Http\Controllers\Dashboard\CategoryController::class);
     Route::resource('/post', App\Http\Controllers\Dashboard\PostController::class);
-    Route::post('/post/upload/{post}', [App\Http\Controllers\Dashboard\PostController::class,'upload'])->name('post.upload');
+    Route::post('/post/upload/{post}', [App\Http\Controllers\Dashboard\PostController::class, 'upload'])->name('post.upload');
 
     Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+});
+
+Route::group([
+    'prefix' => 'contact',
+], function () {
+    Route::resource('contact-general', GeneralController::class)->only(['create', 'edit', 'store', 'update']);
+    Route::resource('contact-company', CompanyController::class)->only(['create', 'edit', 'store', 'update']);
+    Route::resource('contact-person', PersonController::class)->only(['create', 'edit', 'store', 'update']);
+    Route::resource('contact-detail', DetailController::class)->only(['create', 'edit', 'store', 'update']);
 });
 
 
