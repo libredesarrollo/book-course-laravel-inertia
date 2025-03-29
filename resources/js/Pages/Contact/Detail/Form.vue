@@ -11,6 +11,7 @@
                 <Button class="mt-2" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Save
                 </Button>
+                <span class="mt-1 ml-3 cursor-pointer" @click="$emit('backStepEvent', 2)">Back</span>
             </form>
         </div>
     </ContactLayout>
