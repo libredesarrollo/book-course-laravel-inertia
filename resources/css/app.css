@@ -153,3 +153,14 @@ select, textarea {
     padding: 10px;
 }
 /* CKEDITOR */
+/* STEP */
+.step{
+    @apply font-medium px-6 border-b-2  tracking-wider py-2 mt-4
+}
+
+
+.active{
+    @apply border-indigo-500 rounded-t bg-gray-100 text-gray-800
+}
+
+/* STEP */

@@ -34,17 +34,17 @@
 import ContactLayout from "@/Layouts/ContactLayout.vue";
 
 import ContactGeneral from "@/Pages/Contact/General/Form.vue"
-// import ContactCompany from "@/Pages/Contact/Company/Form.vue"
-// import ContactPerson from "@/Pages/Contact/Person/Form.vue"
-// import ContactDetail from "@/Pages/Contact/Detail/Form.vue"
+import ContactCompany from "@/Pages/Contact/Company/Form.vue"
+import ContactPerson from "@/Pages/Contact/Person/Form.vue"
+import ContactDetail from "@/Pages/Contact/Detail/Form.vue"
 
 export default {
     components: {
         ContactLayout,
         ContactGeneral,
-        // ContactCompany,
-        // ContactPerson,
-        // ContactDetail
+        ContactCompany,
+        ContactPerson,
+        ContactDetail
     },
     props: {
         errors: Object,

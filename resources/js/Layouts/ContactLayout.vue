@@ -25,7 +25,7 @@ withDefaults(defineProps<Props>(), {
 
 <template>
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <transition>
             <div v-if="visibleFlashContainer" class="mx-3">
                 <div v-if="$page.props.flash.message && hideFlashMessage()" class="

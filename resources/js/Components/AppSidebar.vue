@@ -14,6 +14,16 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Post',
+        href: '/dashboard/post',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Category',
+        href: '/dashboard/category',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

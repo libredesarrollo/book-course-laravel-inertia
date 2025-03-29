@@ -43,8 +43,8 @@ import { type BreadcrumbItem } from '@/types';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import InputError from '@/components/InputError.vue';
-
 import { Button } from '@/components/ui/button';
+import HeadingSmall from '@/components/HeadingSmall.vue';
 
 export default {
     props: {
@@ -63,7 +63,8 @@ export default {
         InputError,
         Label,
         Button,
-        Input
+        Input,
+        HeadingSmall
     },
     setup(props) {
 
