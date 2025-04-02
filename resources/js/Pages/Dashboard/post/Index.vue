@@ -39,7 +39,7 @@
                 </select>
                 <Input type="text" placeholder="Search..." v-model="search" />
                 <Input type="date" placeholder="Date From" v-model="from" />
-                <Input @change="customSearch"  type="date" placeholder="Date To" v-model="to" />
+                <Input @change="customSearch" type="date" placeholder="Date To" v-model="to" />
 
                 <Button @click="customSearch">
                     Filter
@@ -54,14 +54,26 @@
             <table class="w-full border">
                 <thead class="dark:bg-gray-800 bg-gray-100">
                     <tr class="border-b">
-                        <th class="p-3">Id</th>
+                        <!-- <th class="p-3">Id</th>
                         <th class="p-3">Title</th>
                         <th class="p-3">Date</th>
                         <th class="p-3">Posted</th>
                         <th class="p-3">Category</th>
                         <th class="p-3">Description</th>
-                        <th class="p-3">Actions</th>
-
+                        <th class="p-3">Actions</th> -->
+                        <th v-for="(c, k) in columns" class="p-3" :key="c">
+                            <button @click="sort(k)">
+                                {{ c }}
+                                <template v-if="k == sortColumn">
+                                    <template v-if="'asc' == sortDirection">
+                                        &uarr;
+                                    </template>
+                                    <template v-else>
+                                        &darr;
+                                    </template>
+                                </template>
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,8 +85,8 @@
                         <td class="p-2 text-center">{{ p.category.title }}</td>
                         <td class="p-2 text-center">
                             <textarea class="w-48 block m-auto">
-                                {{ p.description }}
-                            </textarea>
+                {{ p.description }}
+            </textarea>
                         </td>
                         <td class="p-2">
                             <Link class="text-sm text-purple-400 hover:text-purple-700"
@@ -160,6 +172,8 @@ export default {
             search: this.prop_search,
             from: this.prop_from,
             to: this.prop_to,
+            sortColumn: this.prop_sortColumn,
+            sortDirection: this.prop_sortDirection,
         };
     },
     props: {
@@ -171,6 +185,9 @@ export default {
         prop_search: String,
         prop_from: String,
         prop_to: String,
+        prop_sortDirection: String,
+        prop_sortColumn: String,
+        columns: Object,
     },
     components: {
         Pagination,
@@ -216,11 +233,19 @@ export default {
                 search: this.search,
                 from: this.from,
                 to: this.to,
+                sortColumn: this.sortColumn,
+                sortDirection: this.sortDirection == 'asc' ? 'desc' : 'asc',
+
             }))
         },
         cleanSearch() {
             router.get(route("post.index"));
         },
+        sort(column) {
+            this.sortColumn = column
+            this.customSearch()
+        }
+
 
     },
 }
