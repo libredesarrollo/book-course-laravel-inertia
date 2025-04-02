@@ -10,7 +10,6 @@ function getStep(?ContactGeneral $contactGeneral = null): float
     if ($contactGeneral == null)
         return 1;
 
-
     //step 2
     if ($contactGeneral->company == null && $contactGeneral->type == 'company')
         return 2;

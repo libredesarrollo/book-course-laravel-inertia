@@ -16,8 +16,41 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::paginate(2);
-        return inertia("dashboard/post/Index", compact("posts"));
+        $posts = Post::where("id", ">=", 1);
+        $categories = Category::get();
+        $search = request('search');
+        $from = request('from');
+        $to = request('to');
+        $type = request('type');
+        $category_id = request('category_id');
+        $posted = request('posted');
+
+
+        if (request('type')) {
+            $posts->where('type', request("type"));
+        }
+
+        if (request('category_id')) {
+            $posts->where('category_id', request("category_id"));
+        }
+
+        if (request('posted')) {
+            $posts->where('posted', request("posted"));
+        }
+
+        if (request('search')) {
+            $posts->where(function ($query) {
+                $query->orWhere("id", "like", "%" . request("search") . "%")
+                    ->orWhere("title", "like", "%" . request("search") . "%")
+                    ->orWhere("description", "like", "%" . request("search") . "%")
+                ;
+            });
+        }
+
+        $posts = $posts->with('category')->paginate(15);
+        return inertia("dashboard/post/Index", ["posts" => $posts, "categories" => $categories,
+        "prop_posted" => $posted, "prop_category_id" => $category_id, "prop_type" => $type, 
+        "prop_from" => $from, "prop_to" => $to, "prop_search" => $search]);
     }
 
 
@@ -44,6 +77,7 @@ class PostController extends Controller
 
     public function update(Put $request, Post $post)
     {
+
         $post->update($request->validated());
         return redirect()->route('post.index')->with('message', "Updated post successfully");
     }

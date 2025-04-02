@@ -13,20 +13,69 @@
         <Link class="link-button-default mx-4  my-3" :href="route('post.create')">Create</Link>
 
         <div class="mx-4">
+
+            <div class="grid grid-cols-2 gap-2 mb-2">
+                <select @change="customSearch" class="rounded-md w-full border-gray-300" v-model="posted">
+                    <option :value="null">Posted</option>
+                    <option value="not">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+
+
+                <select @change="customSearch" class="rounded-md w-full border-gray-300" v-model="type">
+                    <option :value="null">Type</option>
+                    <option value="advert">Advert</option>
+                    <option value="post">Post</option>
+                    <option value="course">Course</option>
+                    <option value="movie">Movie</option>
+                </select>
+
+
+                <select @change="customSearch" class="rounded-md w-full border-gray-300" v-model="category_id">
+                    <option :value="null">Category</option>
+                    <option v-for="c in categories" :value="c.id" :key="c.id">
+                        {{ c.title }}
+                    </option>
+                </select>
+                <Input type="text" placeholder="Search..." v-model="search" />
+                <Input type="date" placeholder="Date From" v-model="from" />
+                <Input @change="customSearch"  type="date" placeholder="Date To" v-model="to" />
+
+                <Button @click="customSearch">
+                    Filter
+                </Button>
+                <Button variant="secondary" class="ml-3" @click="cleanSearch">
+                    Clear
+                </Button>
+
+            </div>
+
+
             <table class="w-full border">
                 <thead class="dark:bg-gray-800 bg-gray-100">
                     <tr class="border-b">
                         <th class="p-3">Id</th>
                         <th class="p-3">Title</th>
-                        <th class="p-3">Slug</th>
+                        <th class="p-3">Date</th>
+                        <th class="p-3">Posted</th>
+                        <th class="p-3">Category</th>
+                        <th class="p-3">Description</th>
                         <th class="p-3">Actions</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="border-b" v-for="p in posts.data" :key="p.id">
-                        <td class="p-2">{{ p.id }}</td>
-                        <td class="p-2">{{ p.title }}</td>
-                        <td class="p-2">{{ p.slug }}</td>
+                        <td class="p-2 text-center">{{ p.id }}</td>
+                        <td class="p-2 text-center">{{ p.title.substring(0, 15) }}</td>
+                        <td class="p-2 text-center">{{ p.date }}</td>
+                        <td class="p-2 text-center">{{ p.posted }}</td>
+                        <td class="p-2 text-center">{{ p.category.title }}</td>
+                        <td class="p-2 text-center">
+                            <textarea class="w-48 block m-auto">
+                                {{ p.description }}
+                            </textarea>
+                        </td>
                         <td class="p-2">
                             <Link class="text-sm text-purple-400 hover:text-purple-700"
                                 :href="route('post.edit', p.id)">Edit</Link>
@@ -85,6 +134,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import Pagination from '@/shared/Pagination.vue';
 
 import { Button } from '@/components/ui/button';
+import Input from '@/components/ui/input/Input.vue';
 
 import {
     Dialog,
@@ -95,26 +145,32 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+
 } from '@/components/ui/dialog';
 
 export default {
+
     data() {
         return {
             confirmDeleteActive: false,
             deletePostRow: "",
+            type: this.prop_type,
+            category_id: this.prop_category_id,
+            posted: this.prop_posted,
+            search: this.prop_search,
+            from: this.prop_from,
+            to: this.prop_to,
         };
     },
-    methods: {
-        // deletePost() {
-        //     router.delete(route("post.destroy", this.deletePostRow));
-        //     this.confirmDeleteActive = false;
-        // },
-        deletePost(post) {
-            router.delete(route("post.destroy", post.id));
-        },
-    },
     props: {
-        posts: Object
+        posts: Object,
+        categories: Object,
+        prop_type: String,
+        prop_category_id: String,
+        prop_posted: String,
+        prop_search: String,
+        prop_from: String,
+        prop_to: String,
     },
     components: {
         Pagination,
@@ -129,10 +185,9 @@ export default {
         DialogHeader,
         DialogTitle,
         DialogTrigger,
-
+        Input
     },
     setup() {
-
         const breadcrumbs = [
             {
                 title: 'Posts',
@@ -143,6 +198,30 @@ export default {
         return {
             breadcrumbs
         };
-    }
+    },
+    methods: {
+        // deletePost() {
+        //     router.delete(route("post.destroy", this.deletePostRow));
+        //     this.confirmDeleteActive = false;
+        // },
+        deletePost(post) {
+            router.delete(route("post.destroy", post.id));
+        },
+        customSearch() {
+
+            router.get(route('post.index', {
+                category_id: this.category_id,
+                type: this.type,
+                posted: this.posted,
+                search: this.search,
+                from: this.from,
+                to: this.to,
+            }))
+        },
+        cleanSearch() {
+            router.get(route("post.index"));
+        },
+
+    },
 }
 </script>
