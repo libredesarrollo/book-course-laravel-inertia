@@ -44,9 +44,9 @@
                 <Button @click="customSearch">
                     Filter
                 </Button>
-                <Button variant="secondary" class="ml-3" @click="cleanSearch">
+                <!-- <Button variant="secondary" class="ml-3" @click="cleanSearch">
                     Clear
-                </Button>
+                </Button> -->
 
             </div>
 

@@ -36,6 +36,13 @@ Route::group([
     Route::resource('contact-detail', DetailController::class)->only(['create', 'edit', 'store', 'update']);
 });
 
+Route::group([
+    'prefix' => 'blog',
+
+], function () {
+    Route::get('/', [App\Http\Controllers\Blog\PostController::class, 'index'])->name('web.index');
+    Route::get('/{post:slug}', [App\Http\Controllers\Blog\PostController::class, 'show'])->name('web.show');
+});
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
