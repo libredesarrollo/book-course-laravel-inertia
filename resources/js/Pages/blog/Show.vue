@@ -27,10 +27,10 @@
 
                     <div v-html="post.text" class="my-5"></div>
 
-                    <!-- <template v-if="post.type == 'advert'">
+                    <template v-if="post.type == 'advert'">
                         <cart />
                         <cart-item :post="post" />
-                    </template> -->
+                    </template>
 
                     <hr />
                     <br>
@@ -46,8 +46,8 @@
 
 import WebLayout from "@/Layouts/WebLayout.vue";
 import GeneralStep from "@/Pages/Contact/General/Step.vue";
-// import Cart from "@/Fragment/Cart.vue";
-// import CartItem from '@/Fragment/CartItem.vue';
+import Cart from "@/fragment/Cart.vue";
+import CartItem from '@/fragment/CartItem.vue';
 
 export default {
     data() {
@@ -56,8 +56,8 @@ export default {
     components: {
         WebLayout,
         GeneralStep,
-        // Cart,
-        // CartItem
+        Cart,
+        CartItem
     },
     props: {
         post: Object,

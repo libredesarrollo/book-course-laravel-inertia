@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     })->name('dashboard');
 });
 
+// step
 Route::group([
     'prefix' => 'contact',
     'middleware' => 'auth',
@@ -36,6 +37,7 @@ Route::group([
     Route::resource('contact-detail', DetailController::class)->only(['create', 'edit', 'store', 'update']);
 });
 
+// blog
 Route::group([
     'prefix' => 'blog',
 
@@ -43,6 +45,17 @@ Route::group([
     Route::get('/', [App\Http\Controllers\Blog\PostController::class, 'index'])->name('web.index');
     Route::get('/{post:slug}', [App\Http\Controllers\Blog\PostController::class, 'show'])->name('web.show');
 });
+
+// shop
+
+Route::group([
+    'prefix' => 'shop',
+
+], function () {
+    Route::get('/', [App\Http\Controllers\Shop\CartController::class, 'index'])->name('shop.index');
+    Route::post('/add/{post}/{count}', [App\Http\Controllers\Shop\CartController::class, 'add'])->name('shop.add');
+});
+
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

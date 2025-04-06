@@ -58,7 +58,7 @@ export default {
 
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <!-- <TextInput autofocus @keyup="customSearch" class="w-full" type="text" placeholder="Search..." v-model="search" /> -->
-                        <TextInput autofocus v-debounce.500ms="customSearch" :debounce-events="['keyup']" class="w-full"
+                        <Input autofocus v-debounce.500ms="customSearch" :debounce-events="['keyup']" class="w-full"
                             type="text" placeholder="Search..." v-model="search" />
 
                         <select @change="customSearch" class="rounded w-full border-gray-300" v-model="type">
