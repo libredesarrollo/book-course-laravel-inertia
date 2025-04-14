@@ -56,6 +56,23 @@ Route::group([
     Route::post('/add/{post}/{count}', [App\Http\Controllers\Shop\CartController::class, 'add'])->name('shop.add');
 });
 
+Route::middleware(
+
+    [
+        'middleware' => 'auth',
+        'verified'
+    ]
+
+)->prefix('todo')->group(function () {
+    Route::get('/', [App\Http\Controllers\TodoController::class, 'index'])->name('todo.index');
+    Route::post('/store', [App\Http\Controllers\TodoController::class, 'store'])->name('todo.store');
+    Route::put('/update/{todo}', [App\Http\Controllers\TodoController::class, 'update'])->name('todo.update');
+    Route::delete('/destroy/{todo?}', [App\Http\Controllers\TodoController::class, 'destroy'])->name('todo.destroy');
+    Route::post('/status/{todo}', [App\Http\Controllers\TodoController::class, 'status'])->name('todo.status');
+    Route::post('/order', [App\Http\Controllers\TodoController::class, 'order'])->name('todo.order');
+});
+
+
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
