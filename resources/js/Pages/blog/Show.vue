@@ -28,14 +28,26 @@
                     <div v-html="post.text" class="my-5"></div>
 
                     <template v-if="post.type == 'advert'">
-                        <cart />
-                        <cart-item :post="post" />
+                        <div class="mycard mb-5 ms-auto block max-w-96">
+                            <div class="mycard-body">
+                                <h3 class="text-xl mb-3 ml-4">My products</h3>
+                                <cart :myItemId="post.id" />
+                            </div>
+                        </div>
+                        <transition name="fade-slide">
+                            <div class="mycard-primary mb-5 block max-w-96" v-if="$page.props.cart[post.id] == null">
+                                <div class="mycard-body">
+                                    <h3 class="text-xl mb-3 ml-4">Add this item</h3>
+                                    <cart-item :post="post" />
+                                </div>
+                            </div>
+                        </transition>
                     </template>
 
                     <hr />
                     <br>
 
-                    <GeneralStep :errors="errors" />
+                    <!-- <GeneralStep :errors="errors" /> -->
                 </div>
             </div>
         </div>
@@ -65,3 +77,22 @@ export default {
     },
 };
 </script>
+
+<style>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.4s ease;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>

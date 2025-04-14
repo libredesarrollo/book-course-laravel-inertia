@@ -1,12 +1,18 @@
 <template>
-    <Input v-model="count" type="number"/>
-    <Button @click="submit">Send</Button>
+    <div class="flex flex-row gap-2 items-end">
+        <div>
+            <Label :class='{ "text-red-800":active }' class="mt-4 ms-4">{{ this.post.title.substr(0,15) }}...</Label>
+            <Input v-model="count" type="number" />
+        </div>
+        <Button class="mb-1" size="sm" @click="submit">Send</Button>
+    </div>
 </template>
 <script>
 
 import { router } from "@inertiajs/vue3"
 
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 // import Input from '@/Components/Input.vue';
 import Input from '@/components/ui/input/Input.vue';
 
@@ -15,6 +21,7 @@ import { toRaw } from 'vue'
 export default {
     components: {
         Button,
+        Label,
         Input
     },
     mounted() {
@@ -40,6 +47,10 @@ export default {
             type: String,
             default: "1",
         },
+        active: {
+            type: Boolean,
+            default: false,
+        }
     },
     methods: {
         submit() {

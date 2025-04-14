@@ -1,7 +1,6 @@
 <template>
     <div class="mb-3" v-for="c in $page.props.cart" :key="c">
-        <!-- <input v-model="c[1]" type="number" class="w-20" @keyup.enter="submit(c)"> {{ c[0].title }} -->
-        <CartItem :post="c[0]" :pcount="c[1].toString()" />
+        <CartItem :post="c[0]" :pcount="c[1].toString()" :active='myItemId == c[0].id' />
     </div>
 </template>
 <script>
@@ -13,6 +12,12 @@ export default {
 
     components: {
         CartItem,
+    },
+    props: {
+        myItemId: {
+            type: Number,
+            default: 0,
+        }
     },
     // methods: {
     //     submit(c) {

@@ -164,3 +164,15 @@ select, textarea {
 }
 
 /* STEP */
+
+.mycard {
+    @apply dark:bg-gray-800 bg-white shadow rounded-md
+}
+
+.mycard-primary {
+    @apply dark:bg-red-800 bg-red-200 shadow rounded-md
+}
+
+.mycard-body {
+    @apply px-4 py-5 sm:px-6
+}

@@ -1,8 +1,8 @@
 <template>
     <web-layout>
-        <div class="card">
-            <div class="card-body">
-                <h3>Shopping</h3>
+        <div class="mycard mx-auto block mt-10">
+            <div class="mycard-body">
+                <h3 class="text-4xl text-center mb-10">Shopping</h3>
                 <cart />
             </div>
         </div>
