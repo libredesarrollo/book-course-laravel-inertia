@@ -41,12 +41,12 @@
                 <ul id="listToDo">
                     <draggable v-model="dtodos" item-key="id" @end="order">
                         <template #item="{ element }">
-                            <li :data-id="element.id" class="border py-3 px-4 mt-2">
+                            <li :data-id="element.id" class="border py-3 px-4 mt-2 flex flex-row">
                                 <!--  <li v-for="t in todos" class="border py-3 px-4 mt-2" :key="t">-->
 
-                                <svg @click="status(element)" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                <svg  @click="status(element)" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     :stroke="element.status == '1' ? '#0F0' : '#000'" viewBox="0 0 24 24"
-                                    stroke-width="1.5" class="size-4 inline mr-1">
+                                    stroke-width="1.5" class="mt-3 size-4 inline mr-1">
 
 
                                     <path v-if="element.status == '1'" stroke-linecap="round" stroke-linejoin="round"
@@ -57,7 +57,7 @@
 
                                 </svg>
 
-                                <span v-show="!element.editMode" @click="element.editMode = true">{{ element.name
+                                <span class="w-full pt-2 pl-2" v-show="!element.editMode" @click="element.editMode = true">{{ element.name
                                     }}</span>
                                 <InputError v-if="todoSelected == element.id" :message="errors.name" />
                                 <Input v-show="element.editMode == true" v-model="element.name"
