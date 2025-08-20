@@ -3,6 +3,7 @@
 Repositorio base para acompañar el curso y libro **Primeros pasos con Laravel 12 + Inertia 2**, ideal para aprender a desarrollar aplicaciones web modernas con **Laravel**, **Inertia** y **Vue**.
 
 https://www.desarrollolibre.net/libros/primeros-pasos-laravel-inertia
+
 https://www.desarrollolibre.net/blog/laravel/curso-primeros-pasos-con-laravel-inertia-vuejs-y-tailwindcss
 
 ---
